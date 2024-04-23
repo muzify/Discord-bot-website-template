@@ -123,25 +123,10 @@
         <div class="container">
             <div class="py-2 text-center">
                 <h2>Statics:</h2>
-            </div>
-            <div class="row align-items-center justify-content-center text-center -5">
-                <div class="col">
-                    <img src="./img/statics.svg" alt="" class="img-fluid d-none d-md-block">
-                </div>
-                <div class="col-sm p-5 h1">
-                    <i class="bi bi-hdd-stack text-primary"></i>
-                    <h5>100</h5>
-                    <h5>Server</h5>
-                </div>
-                <div class="col-sm p-5 h1">
-                    <i class="bi bi bi-people-fill text-primary"></i>
-                    <h5>100</h5>
-                    <h5>Users</h5>
-                </div>
-                <div class="col-sm p-5 h1">
-                    <i class="bi bi bi-hash text-primary"></i>
-                    <h5>100</h5>
-                    <h5>Channels</h5>
+                <div id="botStatistics" class="row align-items-center justify-content-center text-center -5">
+                    <div class="col">
+                        <img src="./img/statics.svg" alt="" class="img-fluid d-none d-md-block">
+                    </div>
                 </div>
             </div>
 
@@ -154,7 +139,7 @@
     <section id="FAQ" class="py-5">
         <div class="container">
             <h2 class="text-center mb-3">
-                Frequently Asked Qusetions
+                Frequently Asked Questions
             </h2>
             <div class="accordion accordion-flush" id="your-faq">
                 <div class="accordion-item">
@@ -238,6 +223,38 @@
 
     <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        async function fetchBotStatistics() {
+            try {
+                const response = await fetch('http://d4051bb0-6d28-4b06-b86e-c3dbb1451ff8:3000/bot/statistics');
+                const statistics = await response.json();
+                const botStatisticsElement = document.getElementById('botStatistics');
+                botStatisticsElement.innerHTML = `
+                    <div class="col-sm p-5 h1">
+                        <i class="bi bi-hdd-stack text-primary"></i>
+                        <h5>${statistics.servers}</h5>
+                        <h5>Server</h5>
+                    </div>
+                    <div class="col-sm p-5 h1">
+                        <i class="bi bi bi-people-fill text-primary"></i>
+                        <h5>${statistics.users}</h5>
+                        <h5>Users</h5>
+                    </div>
+                    <div class="col-sm p-5 h1">
+                        <i class="bi bi bi-hash text-primary"></i>
+                        <h5>${statistics.channels}</h5>
+                        <h5>Channels</h5>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching bot statistics:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchBotStatistics();
+        });
+    </script>
 </body>
 
 </html>
